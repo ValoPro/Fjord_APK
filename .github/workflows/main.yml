@@ -14,14 +14,16 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt update
-          # Estas son las librerías que corrigen el error 100
-          sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev libbz2-dev libsqlite3-dev
-          sudo apt install -y libltdl-dev libgmp-dev libmpc-dev libmpfr-dev
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential git ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
+            libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev \
+            zlib1g-dev libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+            libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
           pip install --user --upgrade buildozer cython==0.29.33 virtualenv
 
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:$HOME/.local/bin
-          # El comando 'yes |' es vital para saltarse la advertencia de root
+          # Este comando limpia cualquier basura previa y lanza la compilación
           yes | buildozer -v android debug
